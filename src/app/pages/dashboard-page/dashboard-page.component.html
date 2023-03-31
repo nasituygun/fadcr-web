@@ -1,0 +1,11 @@
+<body>
+    <app-sidebar></app-sidebar>
+    <div class="m-3 projects-screen">
+        <app-add-project-button (btnClick)="addButtonClicked()" text="Add Project" [isDisabled]="false"></app-add-project-button>
+        <div class="cards-root-container mt-5 row" *ngIf="currentAgentsInformation.length > 0">
+            <div *ngFor="let agent of currentAgentsInformation" class="col-4 col-md-3 col-2-xl card-container">
+                <app-dashboard-project-card class="col" [agent]="agent"></app-dashboard-project-card>
+            </div>
+        </div>
+    </div>
+</body>

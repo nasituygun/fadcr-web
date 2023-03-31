@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap");
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Spline Sans", sans-serif;
+  min-height: 10vh;
+  max-height: 250px;
+  display: block;
+}
+
+.row {
+  position: relative;
+  display: flex;
+}
+
+.card {
+  border-radius: 16px;
+  box-shadow: 1px 5px 20px -5px rgba(65, 51, 183, 0.25);
+  max-width: 300px;
+  max-height: 350px;
+}
+.information {
+  padding: .5rem 1.5rem 1.5rem 1.5rem;
+}
+.information .tag {
+  display: block;
+  max-width: fit-content;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow:ellipsis; 
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: normal;
+  border-radius: 6px;
+  border-color: #141b22;
+}
+.information .title {
+  display: block;
+  max-width: fit-content;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow:ellipsis;
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.information .tag:hover ,
+.information .title:hover  {
+    text-overflow: inherit;
+    overflow: visible;
+}
+
+.information .button {
+  font: inherit;
+  line-height: 1;
+  border: 2px solid black;
+  padding: 0.5em 1em;
+  border-radius: 6px;
+  font-weight: 500;
+  align-items: center;
+}
+.information .button:hover {
+	background-color: white;
+	cursor:pointer;
+}
+.information .button:active {
+	background-color: white;
+	border-color: white;
+	cursor:grabbing;
+	transform: translateY(4px);
+}
+
+.information .info {
+  display: block;
+  max-width: fit-content;
+  overflow: hidden;
+  white-space: break-spaces;
+  text-overflow: ellipsis;
+}
+
+.project-card-container {
+  display: flex;
+}

@@ -1,0 +1,14 @@
+body {
+    padding-left: 80px;
+}
+.cards-root-container {
+    max-width: 1800px;
+}
+.card-container {
+    max-height: 350px;
+    margin-bottom: 10px;
+}
+.projects-screen{
+    max-height: fit-content;
+    overflow: y;
+}
