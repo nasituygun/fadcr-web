@@ -1,11 +1,15 @@
-<body>
+<div class="root">
     <app-sidebar></app-sidebar>
     <div class="m-3 projects-screen">
-        <app-add-project-button (btnClick)="addButtonClicked()" text="Add Project" [isDisabled]="false"></app-add-project-button>
-        <div class="cards-root-container mt-5 row" *ngIf="currentAgentsInformation.length > 0">
+        <div class="mx-5 cards-root-container mt-5 row" *ngIf="currentAgentsInformation.length > 0">
             <div *ngFor="let agent of currentAgentsInformation" class="col-4 col-md-3 col-2-xl card-container">
                 <app-dashboard-project-card class="col" [agent]="agent"></app-dashboard-project-card>
             </div>
         </div>
     </div>
-</body>
+    <p-progressSpinner class="spinner" *ngIf="isAgentsLoading"></p-progressSpinner>
+    <h3 class="no-project" *ngIf="!isAgentsLoading && currentAgentsInformation.length == 0">
+        0 PROJECT
+    </h3>
+    <p-toast></p-toast>
+</div>

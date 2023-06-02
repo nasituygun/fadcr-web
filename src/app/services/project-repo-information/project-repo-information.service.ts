@@ -1,9 +1,19 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ProjectInformation } from 'src/app/models/ProjectInformation';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectRepoInformationService {
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
+
+  private baseUrl: string = "http://localhost:8089/"
+
+  getProjectInformation(projectName: string) {
+    const response = this.httpClient.get<ProjectInformation>(this.baseUrl + "projectInformation/" + projectName)
+    
+    return response;
+  }
 }

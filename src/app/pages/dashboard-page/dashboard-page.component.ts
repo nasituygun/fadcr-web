@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { ProjectInformation } from 'src/app/models/ProjectInformation';
 import { AgentService } from 'src/app/services/agent/agent.service';
+import { MasterService } from 'src/app/services/master/master.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -8,33 +10,57 @@ import { AgentService } from 'src/app/services/agent/agent.service';
   styleUrls: ['./dashboard-page.component.css']
 })
 export class DashboardPageComponent {
+  public isAgentsLoading: boolean = false;
+
+  private isMasterConnected: boolean = false;
+
   constructor(
-    private agentService: AgentService
+    private agentService: AgentService,
+    private messageService: MessageService,
+    private masterService: MasterService
   ) {}
 
   ngOnInit() {
+    localStorage.clear();
+
+    this.showError("Master");
+
+    this.checkMasterConnection();
     this.getAllAgents();
   }
 
   currentAgentsInformation: ProjectInformation[] = [];
   private getAllAgents() {
-    // this.agentService.getAllAgents().subscribe( result => {
-    //   this.currentAgentsInformation = result;
-    // });
-  }
-
-  addButtonClicked() {
-    var smth: ProjectInformation = {
-      readme: "If you read me, I'll help you",
-      createdAt: "22.03.22",
-      numberOfCommits: 102,
-      owner: "Me&Myself",
-      repoName: "Me&Myself&I"
+    this.isAgentsLoading = true;
+    const agentsObserver = {
+      next: (projects: ProjectInformation[]) => {
+        this.isAgentsLoading = true;
+        this.currentAgentsInformation = projects;
+      },
+      error: (error: Error) => {
+        this.isAgentsLoading = false;
+        this.showError("Agent");
+        this.currentAgentsInformation = [];
+      },
+      complete: () => {
+        this.isAgentsLoading = false;
+        console.log(this.currentAgentsInformation)
+      }
     }
 
-    this.currentAgentsInformation.push(smth)
-    console.log(this.currentAgentsInformation)
+     this.agentService.getAllAgents().subscribe(agentsObserver);
   }
 
+  checkMasterConnection() {
+    this.masterService.tryToConnectBackend().subscribe(response => this.isMasterConnected = response);
+    if(!this.isMasterConnected) {
+      
+      this.showError("Master");
+    }
+  }
+
+  showError(serviceName: string) {
+    this.messageService.add({ severity: 'error', summary: 'Error', detail: `Couldn't connect to ${serviceName} Service!` });
+  }
 
 }

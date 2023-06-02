@@ -1,13 +1,22 @@
 <body >
   <div class="card">
-    <article class="information">
-      <span class="tag">{{agent.owner}}</span>
-      <h2 class="title">{{agent.repoName}}</h2>
-      <p class="info">
-        {{agent.readme}}
-      </p>
-      <div>
-        <button type="button" class="button">
+    <article class="information container">
+      <div class="justify-content-between row header">
+        <span class="tag col-5">{{agent.owner}}</span>
+        <div class="col-1 pt-3">
+          <div [ngClass]="agent.online ? 'online' : 'offline'"></div>
+        </div>
+      </div>
+      <div class="row">
+        <h2 class="title">{{agent.repositoryName}}</h2>
+      </div>
+      <div class="content row">
+        <span class="info">
+          {{agent.about}}
+        </span>
+      </div>
+      <div class="d-flex justify-content-center row  align-items-end">
+        <button type="button" class="button w-50" (click)="getProjectInfo()" [ngClass]="agent.online ? '' : 'not-clickable'">
           <span>Show Project</span>
         </button>
       </div>

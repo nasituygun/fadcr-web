@@ -10,10 +10,12 @@ export class AddProjectButtonComponent {
   public buttonText = '';
   faPlus = faPlus;
 
-	@Input()
-	set text(name: string) {
-		this.buttonText = name;
+	@Input() text: string = "";
+
+	ngOnChanges() {
+		this.buttonText = this.text;
 	}
+
 
 	@Input() color: string = '0068B4';
 	@Input() type: string = 'button';

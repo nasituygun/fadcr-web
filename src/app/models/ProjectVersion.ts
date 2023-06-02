@@ -1,8 +1,12 @@
+import { ProjectVersionMethod } from "./ProjectVersionMethod";
+
 export interface ProjectVersion {
-    projectId: string;
-    version: string;
-    contributors: string[];
-    startedOn: string;
-    completedOn: string;
-    numberOfCommits: number;
+    id: string
+    name: string;
+    createdAt: string;
+    description: string;
+    github: string;
+    bugCatchger: string;
+    promise: string;
+    analysed: boolean;
 }

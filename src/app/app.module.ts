@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -10,21 +13,50 @@ import { AddProjectButtonComponent } from './components/add-project-button/add-p
 import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
+import { ProjectInfoPageComponent } from './pages/project-info-page/project-info-page.component';
+import { VersionProfilePageComponent } from './pages/version-profile-page/version-profile-page.component';
+
+import { ToastModule } from 'primeng/toast';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { MessageService } from 'primeng/api';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { SplitterModule } from 'primeng/splitter';
+import { ChartModule } from 'primeng/chart';
+import { ProgressBarModule } from 'primeng/progressbar';
+
+
 @NgModule({
   declarations: [
     AppComponent,
     SidebarComponent,
     DashboardProjectCardComponent,
     DashboardPageComponent,
-    AddProjectButtonComponent
+    AddProjectButtonComponent,
+    ProjectInfoPageComponent,
+    VersionProfilePageComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ToastModule,
+    ProgressSpinnerModule,
+    TableModule,
+    ButtonModule,
+    DropdownModule,
+    RadioButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    SplitterModule,
+    ChartModule,
+    ProgressBarModule
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

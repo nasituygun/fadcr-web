@@ -10,12 +10,13 @@ export class AgentService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private apiBaseUrl: string = "http://localhost:8085/api/v1/agent"
+  private apiBaseUrl: string = "http://localhost:8089/api/v1/agent/"
 
   
   getAllAgents(): Observable<ProjectInformation[]> {
-    const response = this.httpClient.get<ProjectInformation[]>(this.apiBaseUrl + "/active");
+    const response = this.httpClient.get<ProjectInformation[]>(this.apiBaseUrl + "active");
     
     return response;
   }
+
 }

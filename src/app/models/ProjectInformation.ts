@@ -1,7 +1,9 @@
 export interface ProjectInformation {
-    readme: string;
-    createdAt: string;
-    numberOfCommits: number;
+    id: string;
     owner: string;
-    repoName: string;
+    repositoryName: string;
+    status: string;
+    about: string;
+    online: boolean;
+    readme: string;
 }

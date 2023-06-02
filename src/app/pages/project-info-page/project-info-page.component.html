@@ -1,0 +1,208 @@
+<body>
+  <app-sidebar></app-sidebar>
+  <div class="page-content row justify-content-between pt-3">
+    <div class="p-3">
+      <div class="row justify-content-between">
+        <div class="project-title col mx-2">
+          <div class="row">
+            <h2 class="col-auto">{{ repoName }}</h2>
+            <div class="col-auto badge">Not Analyzed</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-between">
+      <div class="analyis col-7 p-3">
+        <h4>Release Version Selection</h4>
+
+        <div class="card">
+          <p-table
+            [paginator]="true"
+            [rows]="5"
+            [loading]="versionsLoading"
+            [value]="versionList"
+            dataKey="versionValue"
+            [tableStyle]="{ 'min-width': '50rem' }"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 5rem"></th>
+                <th pSortableColumn="versionValue">
+                  Version <p-sortIcon field="versionValue"></p-sortIcon>
+                </th>
+                <th pSortableColumn="price">
+                  Release Note <p-sortIcon field="price"></p-sortIcon>
+                </th>
+                <th pSortableColumn="category">
+                  Release Date <p-sortIcon field="category"></p-sortIcon>
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-version let-expanded="expanded">
+              <tr>
+                <td>
+                  <button
+                    [ngClass]="version.versionValue == '' ? 'invisible': 'visible'"
+                    type="button"
+                    pButton
+                    pRipple
+                    [pRowToggler]="version"
+                    class="p-button-text p-button-rounded p-button-plain"
+                    [icon]="
+                      expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+                    "
+                  ></button>
+                </td>
+                <td>{{ version.versionValue }}</td>
+                <td>{{ version.versionDescription }}</td>
+                <td>{{ version.versionDate }}</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="rowexpansion" let-version>
+              <tr>
+                <td colspan="7">
+                  <div class="p-3">
+                    <p-table [value]="version.methods" dataKey="id">
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th pSortableColumn="methodName">
+                            Method<p-sortIcon field="price"></p-sortIcon>
+                          </th>
+                          <th pSortableColumn="methodStatus">
+                            Status <p-sortIcon field="customer"></p-sortIcon>
+                          </th>
+                          <th style="width: 4rem"></th>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-method>
+                        <tr class="analyze-method-row">
+                          <td>{{ method.methodName }}</td>
+                          <td>
+                            {{ method.methodStatus }}   
+                            <a href="" *ngIf="method.methodStatus == 'Analyzed'"
+                            >
+                              <i
+                                class="pi pi-eye"
+                              ></i>
+                            </a>
+                          </td>
+                          <td>
+                            <p-button
+                              *ngIf="!selectedVersion && !selectedMethod"
+                              type="button"
+                              (click)="
+                                selectMethodAndVersion(
+                                  version.versionValue,
+                                  method.methodName
+                                )
+                              "
+                            >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart-line-fill" viewBox="0 0 16 16">
+                              <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2z"/>
+                            </svg>
+                          </p-button>
+                          <p-button
+                          *ngIf="(selectedVersion == version.versionValue) && (selectedMethod == method.methodName)"
+                          type="button"
+                          (click)="deselectVersionAndMethod()"
+                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                        </svg>
+                      </p-button>
+                          </td>
+                        </tr>
+                      </ng-template>
+                      <ng-template pTemplate="emptymessage">
+                        <tr>
+                          <td colspan="6">
+                            Couldn't find an analyze method
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <div class="mt-3 row justify-content-between align-items-center">
+          <div class="col">
+            <div class="row">
+              <h6 class="col-12">
+                <div
+                  [ngStyle]="{
+                    visibility: selectedVersion ? 'visible' : 'hidden'
+                  }"
+                >
+                  Selected Version:{{ selectedVersion }}
+                </div>
+              </h6>
+              <h6 class="col-12">
+                <div
+                  [ngStyle]="{
+                    visibility: selectedMethod ? 'visible' : 'hidden'
+                  }"
+                >
+                  Selected Method:{{ selectedMethod }}
+                </div>
+              </h6>
+            </div>
+          </div>
+          <div class="col">
+            <p-button
+              style="float: right"
+              styleClass="p-button-sm p-button-rounded p-button-primary p-button-rounded"
+              type="button"
+              [disabled]="!selectedVersion && !selectedMethod"
+              (click)="analyzeVersion()"
+            >
+              Analyze Version
+            </p-button>
+          </div>
+        </div>
+      </div>
+      <div class="about col-5 p-3">
+        <h4>Read Me</h4>
+
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+          feugiat diam in lectus dapibus porttitor. Duis egestas neque eu justo
+          lobortis maximus. Nunc id ultricies orci. Pellentesque congue metus
+          sit amet viverra fringilla. Maecenas feugiat libero velit, at accumsan
+          dolor ornare ac. Aenean blandit vehicula odio, id posuere quam
+          tristique placerat. In eleifend nisi a quam volutpat, sagittis iaculis
+          dolor hendrerit. Orci varius natoque penatibus et magnis dis
+          parturient montes, nascetur ridiculus mus. Vestibulum a gravida metus.
+          Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+          posuere cubilia curae;
+        </p>
+        <p>
+          Aliquam purus lorem, luctus eu fermentum non, finibus vitae eros.
+          Praesent odio elit, ornare ornare bibendum vel, mattis non purus.
+          Praesent imperdiet at purus ac eleifend. Nunc eget metus ipsum.
+          Maecenas accumsan vitae ipsum vel ultricies. Interdum et malesuada
+          fames ac ante ipsum primis in faucibus. Curabitur eleifend neque id
+          pulvinar hendrerit. Quisque turpis purus, suscipit non viverra sed,
+          sollicitudin vel diam. Sed ac ultricies mi. Curabitur sit amet
+          ultricies lacus, et pharetra nunc. In vitae fermentum risus. Donec nec
+          vulputate augue, sit amet aliquam turpis. Quisque non nisi viverra,
+          interdum ex ut, finibus felis. Class aptent taciti sociosqu ad litora
+          torquent per conubia nostra, per inceptos himenaeos. Duis ornare felis
+          diam, ut rhoncus felis placerat eget.
+        </p>
+        <ul>
+          <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+          <li>Integer sed dui at leo sodales volutpat.</li>
+          <li>
+            Nunc molestie eros euismod sapien ullamcorper, id interdum metus
+            viverra.
+          </li>
+          <li>Duis eget ipsum commodo, gravida erat in, tempor nisl.</li>
+          <li>Vestibulum pharetra magna vel sapien placerat hendrerit.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>

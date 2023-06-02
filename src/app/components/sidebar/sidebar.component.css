@@ -1,7 +1,7 @@
 @import url(https://fonts.googleapis.com/css?family=Titillium+Web:300);
 body {
   display: flex;
-}
+} 
 
 ::ng-deep fa-icon {
   font-size: 2em;

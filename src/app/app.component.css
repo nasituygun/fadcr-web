@@ -1,3 +1,12 @@
 body {
     max-height: 100vw;
+    min-height: 100%;
+}
+
+:host ::ng-deep body app-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 999;
 }

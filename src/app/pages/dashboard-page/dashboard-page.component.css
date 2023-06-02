@@ -1,5 +1,8 @@
-body {
+div.root {
+    width: 100vw;
     padding-left: 80px;
+    justify-content: center;
+    align-items: center;
 }
 .cards-root-container {
     max-width: 1800px;
@@ -11,4 +14,15 @@ body {
 .projects-screen{
     max-height: fit-content;
     overflow: y;
+}
+.spinner {
+    position: absolute;
+    top: calc(50% - 53px);
+    left: calc(50% - 50px);
+}
+
+.no-project {
+    position: absolute;
+    top: calc(50% - 53px);
+    left: calc(50% - 50px);
 }
