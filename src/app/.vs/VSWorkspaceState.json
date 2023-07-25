@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\pages",
+    "\\pages\\project-info-page",
+    "\\pages\\version-profile-page",
+    "\\pipes",
+    "\\services",
+    "\\services\\master",
+    "\\services\\project-repo-information"
+  ],
+  "SelectedNode": "\\pages\\project-info-page\\project-info-page.component.ts",
+  "PreviewInSolutionExplorer": false
+}

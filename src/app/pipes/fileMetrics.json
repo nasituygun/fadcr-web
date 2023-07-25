@@ -1,0 +1,8 @@
+{
+    "cloc": "Comment Lines of Code",
+    "lloc": "Logical Lines of Code",
+    "loc": "Lines of Code",
+    "cc": "Clone Coverage",
+    "pda": "Private Data Access",
+    "pua": "Public Undocumented APIs"
+}
