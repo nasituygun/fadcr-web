@@ -8,7 +8,7 @@ import { ProjectInformation } from 'src/app/models/ProjectInformation';
 export class ProjectRepoInformationService {
   constructor(private httpClient: HttpClient) { }
 
-  private baseUrl: string = "http://3.87.189.110:8089/"
+  private baseUrl: string = "https://blooming-ravine-57013-e6c21f1a89db.herokuapp.com/"
 
   getProjectInformation(projectName: string) {
     const response = this.httpClient.get<ProjectInformation>(this.baseUrl + "projectInformation/" + projectName)
