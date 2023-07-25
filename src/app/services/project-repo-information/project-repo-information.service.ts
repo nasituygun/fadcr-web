@@ -6,7 +6,6 @@ import { ProjectInformation } from 'src/app/models/ProjectInformation';
   providedIn: 'root'
 })
 export class ProjectRepoInformationService {
-
   constructor(private httpClient: HttpClient) { }
 
   private baseUrl: string = "http://3.87.189.110:8089/"
