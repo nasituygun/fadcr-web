@@ -9,11 +9,11 @@ export class ProjectRepoInformationService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private baseUrl: string = "https://rocky-eyrie-41900-8f3b64454724.herokuapp.com/"
+  private baseUrl: string = "http://3.87.189.110:8089/"
 
   getProjectInformation(projectName: string) {
     const response = this.httpClient.get<ProjectInformation>(this.baseUrl + "projectInformation/" + projectName)
-    
+
     return response;
   }
 }
