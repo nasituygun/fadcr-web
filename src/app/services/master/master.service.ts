@@ -11,7 +11,7 @@ import { ProjectVersion } from 'src/app/models/ProjectVersion';
 })
 export class MasterService {
 
-  private masterBaseUrl: string = "http://3.87.189.110:8089/api/v1/"
+  private masterBaseUrl: string = "https://blooming-ravine-57013-e6c21f1a89db.herokuapp.com/api/v1/"
 
   constructor(private httpClient: HttpClient) { }
 
