@@ -1,135 +1,261 @@
 <body>
-    <app-sidebar></app-sidebar>
-    <div class="page-content row justify-content-between pt-3">
-        <div class="col mx-3">
-            <div class="row">
-                <div class="col-auto">
-                    <h2>
-                        {{repoName}}
-                    </h2>
-                </div>
-                <div *ngIf="!isAnalysisLoading" class="col-auto px-2 badge analyzed">
-                    Analysed
-                  </div>
-                  <div  *ngIf="isAnalysisLoading" class="col-auto px-2 badge analyzing">
-                    Analysing
-                  </div>
-            </div>
-            
-            <div class="row">
-                <i>
-                    {{releaseVersion}}
-                </i> 
-            </div>
+  <app-sidebar></app-sidebar>
+  <div class="page-content row justify-content-between pt-3">
+    <div class="col mx-3">
+      <div class="row">
+        <div class="col-auto">
+          <h2>
+            {{ repoName }}
+          </h2>
+        </div>
+        <div *ngIf="!isAnalysisLoading" class="col-auto px-2 badge analyzed">
+          Analysed
+        </div>
+        <div *ngIf="isAnalysisLoading" class="col-auto px-2 badge analyzing">
+          Analysing
+        </div>
+      </div>
 
-        </div>
-        <div class="container analyzes mb-5" *ngIf="!isAnalysisLoading">
-            <h2 class="row justify-content-center mb-5">Analyzes</h2>
-            <div class="row justify-content-center w-100">
-                <div class="col-12 title">
-                    <div class="row justify-content-center">
-                        <h3 class="col-auto">Github Analytics</h3>
-                    </div>
-                </div>
-                <div class="col-12 card bg-light justify-content-center w-75 h-25 mb-5">
-                    <div class="row justify-content-between text-center">
-                        <div class="col-6 col-xxl-auto">
-                            <h4>Number of commits</h4>
-                            <h1>8311</h1>
-                        </div>
-                        <div class="col-6 col-xxl-auto">
-                            <h4>Number of issues</h4>
-                            <h1>23</h1>
-                        </div>
-                        <div class="col-6 col-xxl-auto">
-                            <h4>Number of contributors</h4>
-                            <h1>7</h1>
-                        </div>
-                        <div class="col-6 col-xxl-auto    ">
-                            <h4>Number of classes</h4>
-                            <h1>30531</h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container text-center">
-                <h3 class="mb-3">Version Metric Comparisons</h3>
-                <div class="col-12 title">
-                    <div class="row justify-content-center">
-                        <h4 class="col-auto">Version Selection</h4>
-                        <p-dropdown placeholder="Select a class" [options]="analysedVersions" [(ngModel)]="selectedClass" (onClick)="refreshChart()"></p-dropdown> 
-                    </div>
-                </div>
-                <div class="row justify-content-center w-100 mb-5">
-                    <div class="col-12 title">
-                        <div class="row justify-content-center">
-                            <h4 class="col-auto">Class Level</h4>
-                            <p-dropdown placeholder="Select a class" [options]="classes" [(ngModel)]="selectedClass" (onClick)="refreshChart()"></p-dropdown> 
-                        </div>
-                    </div>
-                    <div  *ngIf="selectedClass"  class="col-12 card bg-light justify-content-center w-50 h-25">
-                        <p-chart type="radar" [data]="classData" [options]="options"></p-chart>
-                    </div>
-                </div>
-                <div class="row justify-content-center w-100 mb-5">
-                    <div class="col-12 title">
-                        <div class="row justify-content-center">
-                            <h4 class="col-auto">File Level</h4>
-                            <p-dropdown placeholder="Select a file" [options]="files" [(ngModel)]="selectedFile" (onClick)="refreshChart()"></p-dropdown> 
-                        </div>
-                    </div>
-                    <div *ngIf="selectedFile" class="col-12 card bg-light justify-content-center w-50 h-25">
-                        <p-chart type="radar" [data]="fileData" [options]="options"></p-chart>
-                    </div>
-                </div>
-            </div>
-            <div class="container text-center">
-                <h3 class="mb-3">{{selectedAnalyzeMethod}} Method Analytics</h3>
-                <!-- <div class="row justify-content-center w-100 mb-5">
-                    <div class="col-12 title">
-                        <div class="row justify-content-center">
-                            <h4 class="col-auto">Radar Chart</h4>
-
-                        </div>
-                    </div>
-                    <div class="col-12 card bg-light justify-content-center w-50 h-25">
-                        <p-chart type="radar" [data]="data" [options]="options"></p-chart>
-                    </div>
-                </div> -->
-                <div class="row justify-content-center w-100 mb-5">
-                    <div class="col-12 title">
-                        <div class="row justify-content-center">
-                            <h4 class="col-auto">Class Level</h4>
-                            <p-dropdown placeholder="Select a class" [options]="classes" [(ngModel)]="selectedClass" (onClick)="refreshChart()"></p-dropdown> 
-                        </div>
-                    </div>
-                    <div  *ngIf="selectedClass"  class="col-12 card bg-light justify-content-center w-50 h-25">
-                        <p-chart type="radar" [data]="classData" [options]="options"></p-chart>
-                    </div>
-                </div>
-                <div class="row justify-content-center w-100 mb-5">
-                    <div class="col-12 title">
-                        <div class="row justify-content-center">
-                            <h4 class="col-auto">File Level</h4>
-                            <p-dropdown placeholder="Select a file" [options]="files" [(ngModel)]="selectedFile" (onClick)="refreshChart()"></p-dropdown> 
-                        </div>
-                    </div>
-                    <div *ngIf="selectedFile" class="col-12 card bg-light justify-content-center w-50 h-25">
-                        <p-chart type="radar" [data]="fileData" [options]="options"></p-chart>
-                    </div>
-                </div>
-                <!-- <div class="row justify-content-center w-100 mb-5">
-                    <h4 class="col-12 title text-center">Combo Chart</h4>
-                    <div class="col-12 card bg-light justify-content-center w-50 h-25">
-                        <p-chart type="line" [data]="data1" [options]="options1"></p-chart>
-                    </div>
-                </div> -->
-            </div>
-        </div>
-        <div *ngIf="isAnalysisLoading" class="container loading-container row text-center">
-            <h4 style="margin-bottom: 30px">We are analyzing {{releaseVersion}} with {{selectedAnalyzeMethod}} method, please wait.</h4>
-            <p-progressBar mode="indeterminate" [style]="{ height: '6px', width: '60vw', margin: '0 auto'}"></p-progressBar>
-        </div>
+      <div class="row">
+        <i>
+          {{ releaseVersion }}
+        </i>
+      </div>
     </div>
+    <div class="container analyzes mb-5" *ngIf="true">
+      <div class="row justify-content-center w-100">
+        <div class="col-12 title">
+          <div class="row justify-content-center">
+            <h3 class="col-auto">Github Analytics</h3>
+          </div>
+        </div>
+        <div class="col-12 card bg-light justify-content-center w-75 h-25 mb-5">
+          <div class="row justify-content-between text-center">
+            <div class="col-6 col-xxl-auto analysis-container">
+              <div>
+                <h4>Number of commits</h4>
+                <h1 *ngIf="isGithubStaticsLoaded">
+                  {{ githubStats.numberOfCommit }}
+                </h1>
+                <p-progressSpinner
+                  class="spinner"
+                  *ngIf="!isGithubStaticsLoaded"
+                ></p-progressSpinner>
+              </div>
+            </div>
+            <div class="col-6 col-xxl-auto analysis-container">
+              <div>
+                <h4>Number of issues</h4>
+                <h1 *ngIf="isGithubStaticsLoaded">
+                  {{
+                    githubStats.numberOfOpenIssue +
+                      githubStats.numberOfClosedIssue
+                  }}
+                </h1>
+                <p-progressSpinner
+                  class="spinner"
+                  *ngIf="!isGithubStaticsLoaded"
+                ></p-progressSpinner>
+              </div>
+            </div>
+            <div class="col-6 col-xxl-auto analysis-container">
+              <div>
+                <h4>Number of Analyzed Versions</h4>
+                <h1 *ngIf="isGithubStaticsLoaded">
+                  {{githubStats.numberOfAnalyzedVersion}}
+                </h1>
+                <p-progressSpinner
+                  class="spinner"
+                  *ngIf="!isGithubStaticsLoaded"
+                ></p-progressSpinner>
+              </div>
+            </div>
+            <div class="col-6 col-xxl-auto analysis-container">
+              <div>
+                <h4>Number of Versions</h4>
+                <h1 *ngIf="isGithubStaticsLoaded">
+                  {{
+                    githubStats.numberOfAnalyzedVersion +
+                      githubStats.numberOfUnanalyzedVersion
+                  }}
+                </h1>
+                <p-progressSpinner
+                  class="spinner"
+                  *ngIf="!isGithubStaticsLoaded"
+                ></p-progressSpinner>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container text-center">
+        <h3 class="mb-3">Version Metric Comparisons</h3>
+        <div
+          class="col-12 title"
+          *ngIf="githubStats && githubStats.numberOfAnalyzedVersion > 0"
+        >
+          <div class="row justify-content-center">
+            <h4 class="col-auto">Version Selection</h4>
+            <p-dropdown
+              placeholder="Select a release version"
+              [options]="analysedVersions"
+              [(ngModel)]="selectedReleaseVersion"
+              (onChange)="getClassCompare(); getFileCompare();"
+              *ngIf="isAnalyzedVersionsLoaded"
+            ></p-dropdown>
+            <p-progressSpinner
+              class="spinner"
+              *ngIf="!isAnalyzedVersionsLoaded"
+            ></p-progressSpinner>
+          </div>
+        </div>
+        <div class="row">
+          <div class="card col">
+            <div class="row justify-content-center w-100 mb-5">
+              <div class="col-12 title">
+                <div class="row justify-content-center" *ngIf="files">
+                  <h4 class="col-auto">Class Level</h4>
+                  <p-dropdown
+                    placeholder="Select a class"
+                    [options]="classes"
+                    [(ngModel)]="selectedClassInComparison"                    
+                    *ngIf="isClassMetricsLoaded"
+                    [disabled]="isNotNull(selectedReleaseVersion)"
+                  ></p-dropdown>
+                  <p-progressSpinner
+                    class="spinner"
+                    *ngIf="!isClassMetricsLoaded"
+                  ></p-progressSpinner>
 
+                  <div class="row justify-content-center">
+                    <p-multiSelect
+                      placeholder="Select metrics"
+                      class="mt-2"
+                      [options]="classMetricsDictionary"
+                      [(ngModel)]="selectedClassMetrics"
+                      [disabled]="isNotNull(currentClassAverageData)"
+                      (onChange)="fillVersionClassMetricComparisonData()"
+                      optionLabel="title"
+                    ></p-multiSelect>
+                    <p-progressSpinner
+                      class="spinner"
+                      *ngIf="!isClassMetricsLoaded"
+                    ></p-progressSpinner>
+                  </div>
+                  <div
+                    *ngIf="
+                      selectedClassMetrics && selectedClassMetrics.length > 2
+                    "
+                    class="col-12 card bg-light justify-content-center w-75 h-50"
+                  >
+                    <p-chart
+                      type="radar"
+                      [data]="classData"
+                      [options]="options"
+                    ></p-chart>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card col">
+            <div class="row justify-content-center w-100 mb-5">
+              <div class="col-12 title">
+                <div class="row justify-content-center" *ngIf="files">
+                  <h4 class="col-auto">File Level</h4>
+                  <p-dropdown
+                    placeholder="Select a file"
+                    [options]="files"
+                    [(ngModel)]="selectedFileInComparison"
+                    *ngIf="isClassMetricsLoaded"
+                    [disabled]="isNotNull(selectedReleaseVersion)"
+                  ></p-dropdown>
+                  <p-progressSpinner
+                    class="spinner"
+                    *ngIf="!isClassMetricsLoaded"
+                  ></p-progressSpinner>
+
+                  <div class="row justify-content-center">
+                    <p-multiSelect
+                      placeholder="Select metrics"
+                      class="mt-2"
+                      [options]="fileMetricsDictionary"
+                      [(ngModel)]="selectedFileMetrics"
+                      [disabled]="isNotNull(currentFileAverageData  )"
+                      (onChange)="fillVersionFileMetricComparisonData()"
+                      optionLabel="title"
+                      ></p-multiSelect>
+
+                    <p-progressSpinner
+                      class="spinner"
+                      *ngIf="!isClassMetricsLoaded"
+                    ></p-progressSpinner>
+                  </div>
+                </div>
+              </div>
+              <div
+                *ngIf="selectedFileMetrics && selectedFileMetrics.length > 2"
+                class="col-12 card bg-light justify-content-center w-75 h-50"
+              >
+                <p-chart
+                  type="radar"
+                  [data]="fileData"
+                  [options]="options"
+                ></p-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container text-center">
+        <h3 class="mb-3">{{ selectedAnalyzeMethod }} Method Analytics</h3>
+        <div class="row justify-content-center w-100 mb-5">
+          <div class="col-12 title">
+            <div class="row justify-content-center">
+              <h4 class="col-auto">Class Level</h4>
+              <p-dropdown
+                placeholder="Select a class"
+                [options]="classes"
+                [(ngModel)]="selectedClasses"
+                (onSelect)="printSelected(selectedClasses)"
+              ></p-dropdown>
+              <p-multiSelect
+                placeholder="Select metrics"
+                class="mt-2"
+                [options]="classMetricsDictionary"
+                [(ngModel)]="selectedMethodClassMetrics"
+                [disabled]="false"
+                optionLabel="title"
+              ></p-multiSelect>
+            </div>
+          </div>
+          <div
+            class="col-12 card bg-light justify-content-center w-50 h-25"
+            *ngIf="
+              selectedMethodClassMetrics &&
+              selectedMethodClassMetrics.length > 1
+            "
+          >
+            <p-chart
+              type="bar"
+              [data]="
+                selectedMethodClassMetrics.length == 2 ? barData1 : barData2
+              "
+              [options]="basicOptions"
+            ></p-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="false" class="container loading-container row text-center">
+      <h4 style="margin-bottom: 30px">
+        We are analyzing {{ releaseVersion }} with
+        {{ selectedAnalyzeMethod }} method, please wait.
+      </h4>
+      <p-progressBar
+        mode="indeterminate"
+        [style]="{ height: '6px', width: '60vw', margin: '0 auto' }"
+      ></p-progressBar>
+    </div>
+  </div>
 </body>

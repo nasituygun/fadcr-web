@@ -81,7 +81,6 @@ body {
   height: max-content;
   display: block;
   max-width: fit-content;
-  overflow-y: scroll;
   text-overflow:ellipsis;
   max-height: 25vh;
 }

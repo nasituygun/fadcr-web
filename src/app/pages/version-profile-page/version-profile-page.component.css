@@ -37,5 +37,10 @@ body, html {
     background-color: unset !important;
 }
 
-.analyzes {
+::ng-deep p-progressspinner *{
+    fill: white;
+}
+
+::ng-deep div.p-multiselect.p-component {
+    max-width: 300px;
 }

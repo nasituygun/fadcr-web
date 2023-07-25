@@ -26,6 +26,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { SplitterModule } from 'primeng/splitter';
 import { ChartModule } from 'primeng/chart';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { MetricNamesPipe } from './pipes/metric-names.pipe';
 
 
 @NgModule({
@@ -36,7 +38,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     DashboardPageComponent,
     AddProjectButtonComponent,
     ProjectInfoPageComponent,
-    VersionProfilePageComponent
+    VersionProfilePageComponent,
+    MetricNamesPipe
   ],
   imports: [
     BrowserModule,
@@ -54,7 +57,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     ReactiveFormsModule,
     SplitterModule,
     ChartModule,
-    ProgressBarModule
+    ProgressBarModule,
+    MultiSelectModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

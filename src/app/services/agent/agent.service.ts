@@ -10,7 +10,7 @@ export class AgentService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private apiBaseUrl: string = "http://localhost:8089/api/v1/agent/"
+  private apiBaseUrl: string = "https://rocky-eyrie-41900-8f3b64454724.herokuapp.com/api/v1/agent/"
 
   
   getAllAgents(): Observable<ProjectInformation[]> {

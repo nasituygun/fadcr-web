@@ -1,219 +1,157 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ClassAnalysisMetrics } from 'src/app/models/ClassAnalysisMetrics';
+import { GithubStats } from 'src/app/models/GithubStats';
 import { ProjectInformation } from 'src/app/models/ProjectInformation';
 import { MasterService } from 'src/app/services/master/master.service';
+import classMetricsDictionary from '../../pipes/metrics.json';
+import fileMetricsDictionary from '../../pipes/fileMetrics.json';
 
+import { MessageService } from 'primeng/api';
+import { ProjectCompareBody } from 'src/app/models/ProjectCompareBody';
+import { RadarChart } from 'src/app/models/RadarChart';
+import { FileAnalysisMetrics } from 'src/app/models/FileAnalysisMetrics';
+
+interface MetricDictionary {
+    title: string;
+    code: string
+  }
 @Component({
   selector: 'app-version-profile-page',
   templateUrl: './version-profile-page.component.html',
   styleUrls: ['./version-profile-page.component.css']
 })
 export class VersionProfilePageComponent {
-  public files: string[] = ["CompletableFuture.java",
-  "CompletionException.java",
-  "ConcurrentHashMapV8.java",
-  "CountedCompleter.java",
-  "DoubleAdder.java",
-  "DoubleMaxUpdater.java",
-  "ForkJoinPool.java",
-  "ForkJoinTask.java",
-  "ForkJoinWorkerThread.java",
-  "LongAdder.java",
-  "LongAdderTable.java",
-  "LongMaxUpdater.java",
-  "RecursiveAction.java",
-  "RecursiveTask.java",
-  "StampedLock.java",
-  "Striped64.java",
-  "AtomicDouble.java",
-  "AtomicDoubleArray.java",
-  "ReadMostlyVector.java",
-  "SequenceLock.java",
-  "ConcurrentLinkedDeque.java",
-  "CountedCompleter.java",
-  "ForkJoinPool.java",
-  "ForkJoinTask.java",
-  "ForkJoinWorkerThread.java",
-  "LinkedTransferQueue.java",
-  "Phaser.java",
-  "RecursiveAction.java",
-  "RecursiveTask.java",
-  "ThreadLocalRandom.java",
-  "TransferQueue.java",
-  "package-info.java",
-  "BufferedChecksumIndexOutput.java",
-  "RateLimitedFSDirectory.java",
-  "NodeInfo.java",
-  "NodesInfoResponse.java",
-  "NodeStats.java",
-  "IndicesStatsAction.java",
-  "DeleteWarmerAction.java",
-  "PutWarmerAction.java",
-  "package-info.java",
-  "BulkAction.java",
-  "BulkRequestBuilder.java",
-  "package-info.java",
-  "ShardDeleteByQueryResponse.java",
-  "package-info.java",
-  "package-info.java",
-  "IndexResponse.java",
-  "TransportIndexAction.java",
-  "package-info.java",
-  "package-info.java",
-  "MultiSearchAction.java",
-  "ReduceSearchPhaseException.java",
-  "TransportMultiSearchAction.java",
-  "package-info.java",
-  "TransportSearchCountAction.java",
-  "TransportSearchDfsQueryAndFetchAction.java",
-  "TransportSearchQueryAndFetchAction.java",
-  "TransportSearchScanAction.java",
-  "TransportSearchScrollQueryAndFetchAction.java",
-  "AutoCreateIndex.java",
-  "PlainActionFuture.java",
-  "PlainListenableActionFuture.java",
-  "TransportActions.java",
-  "TransportMasterNodeReadOperationAction.java",
-  "NodeOperationRequest.java",
-  "ShardReplicationOperationRequest.java",
-  "UpdateResponse.java",
-  "BulkUdpModule.java",
-  "CacheRecyclerModule.java",
-  "InternalClient.java",
-  "InternalClusterAdminClient.java",
-  "InternalGenericClient.java",
-  "InternalIndicesAdminClient.java",
-  "NodeClient.java",
-  "NodeClusterAdminClient.java",
-  "NodeIndicesAdminClient.java",
-  "TransportClientNodesService.java",
-  "ClusterService.java",
-  "ClusterStateUpdateTask.java",
-  "ProcessedClusterStateUpdateTask.java",
-  "TimeoutClusterStateUpdateTask.java",
-  "MetaDataDeleteIndexService.java",
-  "MetaDataService.java",
-  "DiscoveryNode.java",
-  "DiscoveryNodes.java",
-  "PlainShardIterator.java",
-  "ShardIterator.java",
-  "OperationRouting.java",
-  "DjbHashFunction.java",
-  "InternalClusterService.java",
-  "DynamicSettings.java",
-  "Numbers.java",
-  "ImmutableOpenIntMap.java",
-  "ImmutableOpenLongMap.java",
-  "CompressedStreamInput.java",
-  "CompressedStreamOutput.java",
-  "Compressor.java",
-  "CompressorContext.java",
-  "CompressorFactory.java",
-  "LZFCompressedIndexInput.java"];
-  public classes: string[] = ["BaseActivity",
-  "Constants",
-  "Constants$Extra",
-  "HomeActivity",
-  "ImageGalleryActivity",
-  "ImageGalleryActivity$ImagePagerAdapter",
-  "ImageGridActivity",
-  "ImageGridActivity$1",
-  "ImageGridActivity$ImageAdapter",
-  "ImageListActivity",
-  "ImageListActivity$1",
-  "ImageListActivity$ItemAdapter",
-  "ImageListActivity$ItemAdapter$ViewHolder",
-  "ImagePagerActivity",
-  "ImagePagerActivity$ImagePagerAdapter",
-  "ImagePagerActivity$ImagePagerAdapter$1",
-  "UILApplication",
-  "ExtendedImageDownloader",
-  "UILWidgetProvider",
-  "UILWidgetProvider$1",
-  "UILWidgetProvider$2",
-  "BaseDiscCache",
-  "DiscCacheAware",
-  "LimitedDiscCache",
-  "FileCountLimitedDiscCache",
-  "LimitedAgeDiscCache",
-  "TotalSizeLimitedDiscCache",
-  "UnlimitedDiscCache",
-  "FileNameGenerator",
-  "HashCodeFileNameGenerator",
-  "Md5FileNameGenerator",
-  "BaseMemoryCache<K extends Object, V extends Object>",
-  "LimitedMemoryCache<K extends Object, V extends Object>",
-  "MemoryCacheAware<K extends Object, V extends Object>",
-  "FIFOLimitedMemoryCache",
-  "FuzzyKeyMemoryCache<K extends Object, V extends Object>",
-  "LRULimitedMemoryCache",
-  "LargestLimitedMemoryCache",
-  "LimitedAgeMemoryCache<K extends Object, V extends Object>",
-  "UsingFreqLimitedMemoryCache",
-  "WeakMemoryCache",
-  "DefaultConfigurationFactory",
-  "DisplayBitmapTask",
-  "DisplayImageOptions",
-  "DisplayImageOptions$Builder",
-  "ImageDecoder",
-  "ImageLoader",
-  "ImageLoaderConfiguration",
-  "ImageLoaderConfiguration$1",
-  "ImageLoaderConfiguration$Builder",
-  "ImageLoadingInfo",
-  "LoadAndDisplayImageTask",
-  "LoadAndDisplayImageTask$1",
-  "LoadAndDisplayImageTask$2",
-  "FailReason",
-  "FlushedInputStream",
-  "ImageLoadingListener",
-  "ImageScaleType",
-  "ImageSize",
-  "MemoryCacheUtil",
-  "MemoryCacheUtil$1",
-  "PauseOnScrollListener",
-  "QueueProcessingType",
-  "SimpleImageLoadingListener",
-  "ViewScaleType",
-  "BlockingDeque<E extends Object>",
-  "Deque<E extends Object>",
-  "LIFOLinkedBlockingDeque<T extends Object>",
-  "LinkedBlockingDeque<E extends Object>",
-  "LinkedBlockingDeque$AbstractItr",
-  "LinkedBlockingDeque$DescendingItr",
-  "LinkedBlockingDeque$Itr",
-  "LinkedBlockingDeque$Node<E extends Object>",
-  "BitmapDisplayer",
-  "FadeInBitmapDisplayer",
-  "FakeBitmapDisplayer",
-  "RoundedBitmapDisplayer",
-  "SimpleBitmapDisplayer",
-  "HttpClientImageDownloader",
-  "ImageDownloader",
-  "URLConnectionImageDownloader",
-  "FileUtils",
-  "L"]
+  public classes: string[] = [];
+  public files: string[] = ["JavaxMoneyOrder.java",
+  "ConstraintValidationProcessor.java",
+  "AnnotationParametersValidationIT.java",
+  "AnnotationTypeValidationIT.java",
+  "CircularNestedTypesIT.java",
+  "ConstraintValidationProcessorIT.java",
+  "ConstraintValidationProcessorITBase.java",
+  "GroupSequenceValidationIT.java",
+  "ValidationExtension.java",
+  "HibernateValidatorConfigurationTest.java",
+  "AnnotationDef, A extends Annotation>.java",
+  "ConstraintDef, A extends Annotation>.java",
+  "GenericConstraintDef.java",
+  "RegexpURLValidator.java",
+  "AbstractMessageInterpolator.java",
+  "ParameterMessageInterpolator.java",
+  "ResourceBundleMessageInterpolator.java",
+  "ParanamerParameterNameProvider.java",
+  "ReflectionParameterNameProvider.java",
+  "AggregateResourceBundle.java",
+  "AggregateResourceBundleLocator.java",
+  "CachingResourceBundleLocator.java",
+  "DelegatingResourceBundleLocator.java",
+  "PlatformResourceBundleLocator.java",
+  "AggregateResourceBundleTest.java",
+  "ConstraintValidatorInitializationHelper.java",
+  "ValidatorUtil.java",
+  "Customer.java",
+  "Event.java",
+  "ExampleConstraintValidatorFactory.java",
+  "Order.java",
+  "RetailOrder.java",
+  "HibernateValidator.java",
+  "HibernateValidatorPermission.java",
+  "PredefinedScopeHibernateValidator.java",
+  "ValidationMessages.java",
+  "MyBean.java",
+  "ValidNumberValidator.java",
+  "ValidNameValidator.java",
+  "Bean.java",
+  "MustMatchValidator.java",
+  "Event$EventLocation.java",
+  "ExternalClassLoaderJavaxMoneyServiceProvider.java",
+  "AbstractArquillianIT.java"];
+  public classMetrics: ClassAnalysisMetrics[] = [];
+  public fileMetrics: FileAnalysisMetrics[] = [];
+
+
+  public classMetricsDictionary: MetricDictionary[] = [];
+  public fileMetricsDictionary: MetricDictionary[] = [];
+
+
+  public longFormOfFileMetrics: string[] = ["Comment Lines of Code", "Logical Lines of Code", "Lines of Code", "Clone Coverage", "Private Data Access", "Public Undocumented APIs"];
+  public selectedClassMetrics!: MetricDictionary[];
+  public selectedFileMetrics!: MetricDictionary[];
+  public selectedMethodClassMetrics!: string[];
+
   public selectedAnalyzeMethod!: string;
   public project!: ProjectInformation;
   public isAnalysisLoading: boolean = false;
   public selectedFile!: string;
-  public selectedClass!: string;
 
+  public selectedClasses!: string[];
+  public selectedReleaseVersion!: string;
+  public githubStats!: GithubStats;
+
+  private agentId: string = ""; 
   repoName!: string;
   public releaseVersion!: string;
-  public analysedVersions: string[] = ["v1.2", "v2.1", "v4.22"];
+  public analysedVersions!: string[];
+
+  public classDatasetsToBe!: any[];
+
+  public selectedClassInComparison!: string;
+  public selectedFileInComparison!: string;
+  public selectedClassAndVersionComparionsDataForChart: any;
+
+  public isGithubStaticsLoaded: boolean = false;
+  public isClassMetricsLoaded: boolean = false;
+  public isFileMetricsLoaded: boolean = false;
+  public isAnalyzedVersionsLoaded: boolean = false;
 
   data: any;
+  basicData: any;
   data1: any;
-  classData: any;
-  fileData: any;
+  classData!: RadarChart;
+  fileData!: RadarChart;
+  public barData1 = {
+    labels: ["Comment Lines of Code", "Logical Lines of Code"],
+    datasets: [
+        {
+            label: 'Event',
+            data: [6, 197],
+            backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)'],
+            borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)'],
+            borderWidth: 1
+        }
+    ]
+}
+  public barData2 = {
+    labels: ["Comment Lines of Code", "Logical Lines of Code", "Private Data Access"],
+    datasets: [
+        {
+            label: 'Event',
+            data: [6, 197, 4],
+            backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+            borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)'],
+            borderWidth: 1
+        }
+    ]
+}
 
   options: any;
+  basicOptions: any;
   options1: any;
+
+
+  public currentClassAverageData!: ClassAnalysisMetrics;
+  public selectedClassAverageData!: ClassAnalysisMetrics;
+
+  public currentFileAverageData!: FileAnalysisMetrics;
+  public selectedFileAverageData!: FileAnalysisMetrics;
+
+  private documentStyle = getComputedStyle(document.documentElement);
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private masterService: MasterService
+    private masterService: MasterService,
+    public messageService: MessageService
   ) {
     
   }
@@ -222,98 +160,22 @@ export class VersionProfilePageComponent {
     this.releaseVersion = this.activatedRoute.snapshot.paramMap.get('releaseVersion')!.replaceAll("\\", "/");
     this.selectedAnalyzeMethod = this.activatedRoute.snapshot.paramMap.get('analyzeMethod')!;
     this.project = JSON.parse(localStorage.getItem("project")!);
+    this.agentId = this.project.id;
+
+    this.saveClassMetricsDictionary();
+    this.saveFileMetricsDictionary();
+
 
     this.isAnalysisLoading = true;    
 
-
-    // Weighted methods per class: WMC
-    // Coupling Between object classes: CBO
-    // lack of cohesion in methods: lCOM
-    // afferent couplings : Ca
-    // Efferent Couplings: Ce
-    // lack of cohesion in methods(Henderson-Sellers): LCOM3
-    // Cohesion Among Methods of Class: CAM
-    // Inheritance Coupling: IC 
-    // Coupling Between Methods: CBM 
-    // Average Method Complexity: AMC 
-    // McCabe’s cyclomatic complexity: CC 
-    // Maximum McCabe’s cyclomatic complexity: MAX CC 
-    // Average McCabe’s cyclomatic complexity: AVG CC
+    this.getClassAnalysis();
+    this.getFileAnalysis();
+    this.getGithubStatistics();
+    this.getAnalyzedVersions();
 
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    this.data = {
-        labels: ['WMC', 'CBO', 'lCOM', 'Ca', 'Ce', 'LCOM3', 'CAM'],
-        datasets: [
-            {
-                label: this.releaseVersion,
-                borderColor: documentStyle.getPropertyValue('--bluegray-400'),
-                pointBackgroundColor: documentStyle.getPropertyValue('--bluegray-400'),
-                pointBorderColor: documentStyle.getPropertyValue('--bluegray-400'),
-                pointHoverBackgroundColor: textColor,
-                pointHoverBorderColor: documentStyle.getPropertyValue('--bluegray-400'),
-                data: [65, 59, 90, 81, 56, 55, 40]
-            },
-            {
-                label: "v0.1",
-                borderColor: documentStyle.getPropertyValue('--pink-400'),
-                pointBackgroundColor: documentStyle.getPropertyValue('--pink-400'),
-                pointBorderColor: documentStyle.getPropertyValue('--pink-400'),
-                pointHoverBackgroundColor: textColor,
-                pointHoverBorderColor: documentStyle.getPropertyValue('--pink-400'),
-                data: [28, 48, 40, 19, 96, 27, 100]
-            }
-        ]
-    };
-
-    this.classData = {
-        labels: ['WMC', 'NOA', 'TNOS'],
-        datasets: [
-            {
-                label: "BaseActivity",
-                borderColor: documentStyle.getPropertyValue('--bluegray-400'),
-                pointBackgroundColor: documentStyle.getPropertyValue('--bluegray-400'),
-                pointBorderColor: documentStyle.getPropertyValue('--bluegray-400'),
-                pointHoverBackgroundColor: textColor,
-                pointHoverBorderColor: documentStyle.getPropertyValue('--bluegray-400'),
-                data: [7, 0, 12]
-            },
-            {
-                label: "Average",
-                borderColor: documentStyle.getPropertyValue('--pink-400'),
-                pointBackgroundColor: documentStyle.getPropertyValue('--pink-400'),
-                pointBorderColor: documentStyle.getPropertyValue('--pink-400'),
-                pointHoverBackgroundColor: textColor,
-                pointHoverBord1erColor: documentStyle.getPropertyValue('--pink-400'),
-                data: [4, 1, 7]
-            }
-        ]
-    };
-
-    this.fileData = {
-        labels: ['McCC', 'NumOfPrevMods', 'NumOfDevCommits'],
-        datasets: [
-            {
-                label: "CompletableFuture.java",
-                borderColor: documentStyle.getPropertyValue('--bluegray-400'),
-                pointBackgroundColor: documentStyle.getPropertyValue('--bluegray-400'),
-                pointBorderColor: documentStyle.getPropertyValue('--bluegray-400'),
-                pointHoverBackgroundColor: textColor,
-                pointHoverBorderColor: documentStyle.getPropertyValue('--bluegray-400'),
-                data: [584, 1, 4735]
-            },
-            {
-                label: "Average",
-                borderColor: documentStyle.getPropertyValue('--pink-400'),
-                pointBackgroundColor: documentStyle.getPropertyValue('--pink-400'),
-                pointBorderColor: documentStyle.getPropertyValue('--pink-400'),
-                pointHoverBackgroundColor: textColor,
-                pointHoverBord1erColor: documentStyle.getPropertyValue('--pink-400'),
-                data: [4, 971, 2735]
-            }
-        ]
-    };
     
     this.options = {
         plugins: {
@@ -339,33 +201,50 @@ export class VersionProfilePageComponent {
     const textColor1 = documentStyle1.getPropertyValue('--text-color');
     const textColorSecondary1 = documentStyle1.getPropertyValue('--text-color-secondary');
     const surfaceBorder1 = documentStyle1.getPropertyValue('--surface-border');
-    this.data1 = {
-        labels: ['v1.2', 'v1.8', 'v1.29'],
+
+    //this.fillRadarChartWithData();
+
+    this.basicData = {
+        labels: ["Comment Lines of Code", "Logical Lines of Code", "Private Data Access"],
         datasets: [
             {
-                type: 'line',
-                label: 'Total Commit Count',
-                borderColor: documentStyle.getPropertyValue('--blue-500'),
-                borderWidth: 2,
-                fill: false,
-                tension: 0.5,
-                data: [421, 331, 122,]
-            },
-            {
-                type: 'bar',
-                label: 'Efferent Coupling',
-                backgroundColor: documentStyle.getPropertyValue('--green-500'),
-                data: [84, 66, 20],
-                borderColor: 'white',
-                borderWidth: 2
-            },
-            {
-                type: 'bar',
-                label: 'Bug Fix',
-                backgroundColor: documentStyle.getPropertyValue('--orange-500'),
-                data: [24, 18, 6]
+                label: 'ProgrammaticContainerElementConstraintsForFieldTest',
+                data: [6, 197, 4],
+                backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
+                borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
+                borderWidth: 1
             }
         ]
+    };
+    this.basicOptions = {
+        plugins: {
+            legend: {
+                labels: {
+                    color: textColor
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: documentStyle.getPropertyValue('--surface-border'),
+                    drawBorder: false
+                }
+            },
+            x: {
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: documentStyle.getPropertyValue('--surface-border'),
+                    drawBorder: false
+                }
+            }
+        }
     };
 
 
@@ -400,13 +279,388 @@ export class VersionProfilePageComponent {
     };
 
     this.isAnalysisLoading = false;
+
   }
   
   refreshChart() {
-    console.log("Previous Label: " + this.data.datasets[1].label)
-        console.log("Selected: " + this.selectedAnalyzeMethod)
-        console.log("Label: " + this.data.datasets[1].label)
-        this.data.datasets[1].label = this.selectedAnalyzeMethod;   
+    this.data.datasets[1].label = this.selectedAnalyzeMethod;   
+  }
+
+  fillSelectedClassesData() {
+    this.classDatasetsToBe = [];
+    for(let selectedClass of this.selectedClasses) {
+        //this.fillRadarChartWithData();
+    }
+
+  }
+
+  async getClassAnalysis() {
+    let pageIndex: number = 0;
+    
+    while(pageIndex != 3) {
+        try {
+            this.masterService.getClassAnalysisForVersionAndMethodByPaging(this.agentId, this.releaseVersion, this.selectedAnalyzeMethod, pageIndex).subscribe(
+                response => {
+                    this.manageClassNames(response)
+                    this.saveClassMetrics(response);
+                }
+            )
+            pageIndex++;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    this.isClassMetricsLoaded = true;
+  }
+
+  async getFileAnalysis() {
+    let pageIndex: number = 0;
+    
+    while(pageIndex != 3) {
+        try {
+            this.masterService.getFileAnalysisForVersionAndMethodByPaging(this.agentId, this.releaseVersion, this.selectedAnalyzeMethod, pageIndex).subscribe(
+                response => {
+                    console.log(response)
+                    this.manageFileNames(response)
+                    this.saveFileMetrics(response);
+                }
+            )
+            pageIndex++;
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    this.isClassMetricsLoaded = true;
+  }
+
+  manageClassNames(classAnalysis: ClassAnalysisMetrics[]) {
+    for(let classMetric of classAnalysis) {
+        this.classes.push(classMetric.name);
+    }
+  }
+
+  manageFileNames(fileAnalysis: FileAnalysisMetrics[]) {
+    for(let fileMetric of fileAnalysis) {
+        this.classes.push(fileMetric.fileName);
+    }
+  }
+
+  saveClassMetrics(classMetrics: ClassAnalysisMetrics[]) {
+    for(let classMetric of classMetrics) {
+        this.classMetrics.push(classMetric)
+    }
+  }
+
+  saveFileMetrics(fileMetrics: FileAnalysisMetrics[]) {
+    for(let fileMetric of fileMetrics) {
+        this.fileMetrics.push(fileMetric)
+    }
+  }
+
+  getGithubStatistics() {
+     this.masterService.getGithubStats(this.agentId).subscribe(response => {
+        this.githubStats = response;
+        this.isGithubStaticsLoaded = true;
+     })
+  }
+
+  saveClassMetricsDictionary() {
+
+    this.classMetricsDictionary = [];
+    for(let [key, value] of Object.entries(classMetricsDictionary)) {
+        this.classMetricsDictionary.push(
+            {
+                title: value,
+                code: key
+            }
+        )
+    }
+}
+
+saveFileMetricsDictionary() {
+    this.fileMetricsDictionary = [];
+    for(let [key, value] of Object.entries(fileMetricsDictionary)) {
+        this.fileMetricsDictionary.push(
+            {
+                title: value,
+                code: key
+            }
+        )
+    }
+
+    console.log(fileMetricsDictionary)
+}
+
+
+  printSelected(text:any) {
+    console.log(text)
+  }
+
+  fillVersionClassMetricComparisonData() {
+    //let selectedTitles = this.getTitlesFromMetricDictionary()
+    if(this.selectedClassMetrics.length > 2 && this.selectedClassMetrics.length < 6) {
+        this.getDataOfMetric("ldc", this.classMetrics[0])
+        this.classData = {
+            labels: [],
+            datasets: []
+        };
+
+        this.classData.labels = this.getTitlesFromMetricDictionary(this.selectedClassMetrics);
+        this.classData.datasets.push(
+            {
+                label: this.selectedClassInComparison,
+                borderColor: this.getColorForDataIndex(0),
+                pointBackgroundColor: this.getColorForDataIndex(0),
+                pointBorderColor: this.getColorForDataIndex(0),
+                pointHoverBackgroundColor: this.getColorForDataIndex(0),
+                pointHoverBorderColor: this.getColorForDataIndex(0),
+                data: this.getMetricValuesOfClass(this.getCodesFromMetricDictionary(this.selectedClassMetrics), this.getAnalysisFieldFromClassArray(this.selectedClassInComparison, this.classMetrics))
+            },
+            {
+                label: "Average",
+                borderColor: this.getColorForDataIndex(1),
+                pointBackgroundColor: this.getColorForDataIndex(1),
+                pointBorderColor: this.getColorForDataIndex(1),
+                pointHoverBackgroundColor: this.getColorForDataIndex(1),
+                pointHoverBorderColor: this.getColorForDataIndex(1),
+                data: this.getMetricValuesOfClass(this.getCodesFromMetricDictionary(this.selectedClassMetrics),  this.currentClassAverageData)
+            },
+            {
+                label: this.selectedClassAverageData.name + "-Average",
+                borderColor: this.getColorForDataIndex(2),
+                pointBackgroundColor: this.getColorForDataIndex(2),
+                pointBorderColor: this.getColorForDataIndex(2),
+                pointHoverBackgroundColor: this.getColorForDataIndex(2),
+                pointHoverBorderColor: this.getColorForDataIndex(2),
+                data: this.getMetricValuesOfClass(this.getCodesFromMetricDictionary(this.selectedClassMetrics),  this.selectedClassAverageData)
+            }
+        )
+    }
+    else if(this.selectedClassMetrics.length >= 6) {
+        console.log("WARN TO BE")
+        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Selected metricsa amount should be between 2 and 5" });
+    }
+  }
+
+  fillVersionFileMetricComparisonData() {
+    if(this.selectedFileMetrics.length > 2 && this.selectedFileMetrics.length < 6) {
+        this.fileData = {
+            labels: [],
+            datasets: []
+        };
+
+        this.fileData.labels = this.getTitlesFromMetricDictionary(this.selectedFileMetrics);
+        this.fileData.datasets.push(
+            {
+                label: this.selectedFileInComparison,
+                borderColor: this.getColorForDataIndex(0),
+                pointBackgroundColor: this.getColorForDataIndex(0),
+                pointBorderColor: this.getColorForDataIndex(0),
+                pointHoverBackgroundColor: this.getColorForDataIndex(0),
+                pointHoverBorderColor: this.getColorForDataIndex(0),
+                data: this.getMetricValuesOfFile(this.getCodesFromMetricDictionary(this.selectedFileMetrics), this.getAnalysisFieldFromFileArray(this.selectedFileInComparison, this.fileMetrics))
+            },
+            {
+                label: "Average",
+                borderColor: this.getColorForDataIndex(1),
+                pointBackgroundColor: this.getColorForDataIndex(1),
+                pointBorderColor: this.getColorForDataIndex(1),
+                pointHoverBackgroundColor: this.getColorForDataIndex(1),
+                pointHoverBorderColor: this.getColorForDataIndex(1),
+                data: this.getMetricValuesOfFile(this.getCodesFromMetricDictionary(this.selectedFileMetrics),  this.currentFileAverageData)
+            },
+            {
+                label: this.selectedFileAverageData.fileName + "-Average",
+                borderColor: this.getColorForDataIndex(2),
+                pointBackgroundColor: this.getColorForDataIndex(2),
+                pointBorderColor: this.getColorForDataIndex(2),
+                pointHoverBackgroundColor: this.getColorForDataIndex(2),
+                pointHoverBorderColor: this.getColorForDataIndex(2),
+                data: this.getMetricValuesOfFile(this.getCodesFromMetricDictionary(this.selectedFileMetrics),  this.selectedFileAverageData)
+            }
+        )
+
+        console.log(this.fileData)
+    }
+    else if(this.selectedFileMetrics.length >= 6) {
+        console.log("WARN TO BE")
+        this.messageService.add({ severity: 'warn', summary: 'Warn', detail: "Selected metrics amount should be between 2 and 5" });
+    }
+  }
+
+  getMetricValuesOfClass(metricsToSearch: string[], arrayToSearch: ClassAnalysisMetrics) {
+    let values: number[] = [];
+    console.log(arrayToSearch)
+    for(let metricToSearch of metricsToSearch) {
+        for(let metric of Object.entries(arrayToSearch)) {
+            if (metricToSearch == metric[0]) values.push(metric[1]);
+        }
+    }
+    return values
+  }
+
+  getMetricValuesOfFile(metricsToSearch: string[], arrayToSearch: FileAnalysisMetrics) {
+    let values: number[] = [];
+    console.log(metricsToSearch)
+    for(let metricToSearch of metricsToSearch) {
+        for(let metric of Object.entries(arrayToSearch)) {
+            if (metricToSearch == metric[0]) values.push(metric[1]);
+        }
+    }
+    return values
+  }
+
+  getAnalysisFieldFromClassArray(fieldNameToSearch: string, arrayToSearch: any[]) {
+    for(let entity of arrayToSearch) {
+        if(entity.name == fieldNameToSearch) return entity;
+    }
+  }
+
+  getAnalysisFieldFromFileArray(fieldNameToSearch: string, arrayToSearch: any[]) {
+    console.log(arrayToSearch)
+    for(let entity of arrayToSearch) {
+        if(entity.fileName == fieldNameToSearch) return entity;
+    }
+  }
+
+  getCodesFromMetricDictionary(dictionary: MetricDictionary[]) {
+    let codes: string[] = [];
+
+    for(let field of dictionary) {
+        codes.push(field.code)
+    }
+
+    return codes
+  }
+
+  getTitlesFromMetricDictionary(dictionary: MetricDictionary[]) {
+    let titles: string[] = [];
+
+    for(let field of dictionary) {
+        titles.push(field.title)
+    }
+
+    return titles
+  }
+
+  fillRadarChartWithData(label: string, dataArray: number[], arrayToFill: any[], dataIndex: number) {
+    
+    arrayToFill.push(
+        {
+            type: 'line',
+            label: label,
+            borderColor: this.getColorForDataIndex(dataIndex),
+            borderWidth: 2,
+            fill: false,
+            tension: 0.5,
+            data: dataArray
+        }
+    )
+  }
+
+  prepareVersionComparisonChart(selectedMetrics: string[], selectedVersionName: string, selectedClass: string) {
+    this.selectedClassAndVersionComparionsDataForChart = {
+        labels: selectedMetrics,
+        datasets: [
+            {
+                label: selectedClass,
+                borderColor: this.getColorForDataIndex(0),
+                pointBackgroundColor: this.getColorForDataIndex(0),
+                pointBorderColor: this.getColorForDataIndex(0),
+                pointHoverBackgroundColor: this.getColorForDataIndex(0),
+                pointHoverBorderColor: this.getColorForDataIndex(0),
+                data: [584, 1, 4735]
+            },
+            {
+                label: this.releaseVersion + "-Average",
+                borderColor: this.getColorForDataIndex(1),
+                pointBackgroundColor: this.getColorForDataIndex(1),
+                pointBorderColor: this.getColorForDataIndex(1),
+                pointHoverBackgroundColor: this.getColorForDataIndex(1),
+                pointHoverBord1erColor: this.getColorForDataIndex(1),
+                data: [4, 971, 2735]
+            },
+            {
+                label: selectedVersionName + "-Average",
+                borderColor: this.getColorForDataIndex(2),
+                pointBackgroundColor: this.getColorForDataIndex(2),
+                pointBorderColor: this.getColorForDataIndex(2),
+                pointHoverBackgroundColor: this.getColorForDataIndex(2),
+                pointHoverBord1erColor: this.getColorForDataIndex(2),
+                data: [4, 971, 2735]
+            }
+        ]
+    }
+  }
+
+  getDataOfMetric(metricName: string, listToSearchMetric: ClassAnalysisMetrics) {
+    for(let [metric, value] of Object.entries(listToSearchMetric)) {
+        if (metric == metricName) console.log(metric, value)
+    }
+  }
+
+  getColorForDataIndex(dataIndex: number) {
+    let colorPalettes: string[] = ['cyan-400', 'green-400', 'teal-400', 'orange-400', 'yellow-400', 'indigo-400'] 
+    
+    return this.documentStyle.getPropertyValue(colorPalettes[dataIndex % 6]);
+  }
+
+  getAnalyzedVersions() {
+    this.masterService.getAnalyzedVersions(this.agentId).subscribe( response => {
+
+        this.analysedVersions = [];
+        response.forEach( version => {
+            if(version.name != this.releaseVersion) {
+                this.analysedVersions.push(version.name)
+            }
+        })
+        this.isAnalyzedVersionsLoaded = true;
+    })
+  }
+  isNotNull(data: any) {
+    if(data) return false
+    else return true
+  }
+
+  getClassCompare() {
+    let body: ProjectCompareBody[] = [
+        {
+            agentId: this.agentId,
+            versionName: this.releaseVersion,
+            method: this.selectedAnalyzeMethod
+        },
+        {
+            agentId: this.agentId,
+            versionName: this.selectedReleaseVersion,
+            method: this.selectedAnalyzeMethod
+        }
+    ]  
+    console.log(JSON.stringify(body))
+    this.masterService.getClassCompare(JSON.stringify(body)).subscribe(response => {
+        this.currentClassAverageData = response[0]
+        this.selectedClassAverageData = response[1]
+    });
+  }
+
+  getFileCompare() {
+    let body: ProjectCompareBody[] = [
+        {
+            agentId: this.agentId,
+            versionName: this.releaseVersion,
+            method: this.selectedAnalyzeMethod
+        },
+        {
+            agentId: this.agentId,
+            versionName: this.selectedReleaseVersion,
+            method: this.selectedAnalyzeMethod
+        }
+    ]  
+
+    this.masterService.getFileCompare(JSON.stringify(body)).subscribe(response => {
+        this.currentFileAverageData = response[0]
+        this.selectedFileAverageData = response[1]
+    });
   }
 
 }
+

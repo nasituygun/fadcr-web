@@ -51,7 +51,6 @@ export class ProjectInfoPageComponent {
     this.formGroup = new FormGroup({
       selectedCategory: new FormControl()
     });
-    console.log(this.formGroup)
   }
 
   public repoName!: string;
@@ -84,6 +83,7 @@ export class ProjectInfoPageComponent {
 
   public analyzeVersion() {
     if (this.selectedVersion && this.selectedMethod) {
+      this.masterService.analyzeVersionWithMethod(this.project.id, this.selectedVersion, this.selectedMethod).subscribe(response => console.log(response))
       this.redirectToVersionProfilePage();
     }
   }
@@ -93,9 +93,15 @@ export class ProjectInfoPageComponent {
     this.selectedMethod = method;
   }
 
-  private redirectToVersionProfilePage() {
-    let url = `/version-profile/${this.repoName}/${this.selectedVersion?.replaceAll("/", "\\")}/${this.selectedMethod}`;
-    this.router.navigateByUrl(url);
+  public redirectToVersionProfilePage(analysisMethod: string = "", releaseVersion: string = "") {
+    if (analysisMethod != "" && releaseVersion != "") {
+      let url = `/version-profile/${this.repoName}/${releaseVersion?.replaceAll("/", "\\")}/${analysisMethod}`;
+      this.router.navigateByUrl(url);
+    }
+    else {
+      let url = `/version-profile/${this.repoName}/${this.selectedVersion?.replaceAll("/", "\\")}/${this.selectedMethod}`;
+      this.router.navigateByUrl(url);
+    }
   }
 
   public deselectVersionAndMethod() {

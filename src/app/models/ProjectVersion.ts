@@ -1,5 +1,3 @@
-import { ProjectVersionMethod } from "./ProjectVersionMethod";
-
 export interface ProjectVersion {
     id: string
     name: string;
